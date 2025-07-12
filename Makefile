@@ -1,32 +1,43 @@
-CC        = gcc
-LIB       = lib/libsilkscreen.a
-INCLUDE   = include
-OBJ       = lib
-SRC       = src
+CC := gcc
 
-SRCS      += $(shell find $(SRC) -type f -name '*.c')
-OBJS      = $(patsubst $(SRC)/%.c,$(OBJ)/%.o,$(SRCS))
+SRC_DIR := src
+INC_DIR := include
+OBJ_DIR := build
+LIB_BASE_NAME = silkscreen
 
-WARNFLAGS = -Wall -Wextra -Werror -pedantic
-PFLAGS    = -pthread
-# LDLIBS    = 
+ifeq ($(OS),Windows_NT)
+	LIB_EXT := lib
+	RM      := del /Q
+	AR      := lib /OUT:
+else
+	LIB_EXT := a
+	RM      := rm -rf
+  AR      := ar rcs
+endif
 
-.PHONY: clean format
+SRCS := $(wildcard $(SRC_DIR)/*.c)
+OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-$(OBJ)/%.o: $(SRC)/%.c
-	@mkdir -p "$(@D)"
-	@echo "Compiling: $< -> $@"
-	$(CC) -c -g $(CFLAGS) -I$(INCLUDE) $< -o $@
+CFLAGS  := -I$(INC_DIR) -Wall -Wextra -Werror -pedantic -O3 -std=c11
+ARFLAGS := rcs
 
-$(LIB): $(OBJS)
-	@echo "Linking: $@"
-	$(CC) $^ $(DYNFLAGS) $(WARNFLAGS) -I$(INCLUDE) -o $@
+all: $(OBJ_DIR) $(LIB_BASE_NAME).$(LIB_EXT)
 
-$(OBJ):
-	mkdir -p $@
+$(OBJ_DIR):
+	mkdir $(OBJ_DIR)
 
-format: $(SRC)
-	clang-format $^ -i
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(LIB_BASE_NAME).$(LIB_EXT): $(OBJS)
+ifeq ($(OS),Windows_NT)
+	$(AR)$@ $^
+else
+	$(AR) $@ $^
+endif
 
 clean:
-	rm -rf $(OBJ) $(EXE)
+	$(RM) $(OBJ_DIR)
+	$(RM) $(LIB_BASE_NAME).$(LIB_EXT)
+
+.PHONY: all clean
