@@ -1,43 +1,41 @@
+# Compiler and archiver
 CC := gcc
+AR := ar
 
+# Project structure
 SRC_DIR := src
 INC_DIR := include
 OBJ_DIR := build
-LIB_BASE_NAME = silkscreen
 
-ifeq ($(OS),Windows_NT)
-	LIB_EXT := lib
-	RM      := del /Q
-	AR      := lib /OUT:
-else
-	LIB_EXT := a
-	RM      := rm -rf
-  AR      := ar rcs
-endif
+# Output static library
+LIB_NAME := silkscreen
+LIB_EXT := a
+LIB_FILE := $(LIB_NAME).$(LIB_EXT)
 
+# Compiler flags
+CFLAGS := -I$(INC_DIR) -Wall -Wextra -Werror -pedantic -O3 -std=c11
+
+# File lists
 SRCS := $(wildcard $(SRC_DIR)/*.c)
 OBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS))
 
-CFLAGS  := -I$(INC_DIR) -Wall -Wextra -Werror -pedantic -O3 -std=c11
-ARFLAGS := rcs
+# Default target
+all: $(LIB_FILE)
 
-all: $(OBJ_DIR) $(LIB_BASE_NAME).$(LIB_EXT)
-
+# Create output directory if it doesn't exist
 $(OBJ_DIR):
-	mkdir $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+# Compile source files to object files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(LIB_BASE_NAME).$(LIB_EXT): $(OBJS)
-ifeq ($(OS),Windows_NT)
-	$(AR)$@ $^
-else
-	$(AR) $@ $^
-endif
+# Archive object files into a static library
+$(LIB_FILE): $(OBJS)
+	$(AR) rcs $@ $^
 
+# Clean up build artifacts
 clean:
-	$(RM) $(OBJ_DIR)
-	$(RM) $(LIB_BASE_NAME).$(LIB_EXT)
+	rm -rf $(OBJ_DIR)/*.o $(LIB_FILE)
 
 .PHONY: all clean
