@@ -1,0 +1,7 @@
+CompileFlags:
+  Add: [-Iinclude]
+
+Index:
+  Background: true
+
+FallbackFlags: [-std=c11]

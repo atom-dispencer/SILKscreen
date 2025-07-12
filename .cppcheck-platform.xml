@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<platform>
+    <!-- Bit width of char as 8 bits -->
+    <char_bit>8</char_bit>
+    <!-- Arm EABI defines plain char as unsigned by default -->
+    <default-sign>unsigned</default-sign>
+    <sizeof>
+        <!-- 16‑bit short -->
+        <short>2</short>
+        <!-- 32‑bit int -->
+        <int>4</int>
+        <!-- 32‑bit long -->
+        <long>4</long>
+        <!-- 64‑bit long long -->
+        <long-long>8</long-long>
+        <!-- IEEE‑754 32‑bit float -->
+        <float>4</float>
+        <!-- IEEE‑754 64‑bit double -->
+        <double>8</double>
+        <!-- On Cortex‑M, long double matches double (8 bytes) -->
+        <long-double>8</long-double>
+        <!-- 32‑bit pointers -->
+        <pointer>4</pointer>
+        <!-- size_t is 4 bytes in this data model -->
+        <size_t>4</size_t>
+        <!-- wchar_t is 4 bytes as per __ARM_SIZEOF_WCHAR_T -->
+        <wchar_t>4</wchar_t>
+    </sizeof>
+</platform>
+
