@@ -1,5 +1,6 @@
 .cache/
 lib/
+build/
 compile_commands.json
 *.a
 *.out
