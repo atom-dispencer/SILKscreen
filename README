@@ -1,0 +1,34 @@
+== SILKscreen ==
+
+The name 'SILKscreen' is comprised of two parts: 'SILK' stands for 'Software In the Loop Kernel', 
+and a 'silkscreen' is the top visible layer of a PCB (Printed Circuit Board).
+
+SILKscreen is an API and daemon which allows virtual testing of embedded applications. It aims to 
+solve the problem of developing embedded applications without access to the hardware, and is 
+intended to create a deliberately imperfect environment with the ability to emulate hardware and
+protocol errors.
+
+Many hardware vendors provide layers of abstraction over hardware functions, such as
+ST Microelectronic's 'HAL', Texas Instruments' 'TivaWare', or the Arduino standard library, however
+developers using these are dependent on the relevant hardware being available to be able to test
+their code.
+
+== Components ==
+
+SILKscreen Daemon:
+  An application which runs in the background and replaces the hardware target.
+
+SILKscreen API:
+  A generic API for communicating with the SILKscreen daemon.
+
+Platform API:
+  A platform-specific API which the user must implement in their own use-case. The Platform API can
+  makes calls to the SILKscreen API to emulate/replace any required hardware functionality, and
+  can be used to opt in/out of SILKscreen.
+  For example, a Platform API for an STM32 application which communicates via SPI might define a
+  function which 'transmits' 1 byte and 'receives' 5 bytes.
+
+== Usage ==
+
+The user must include the SILKscreen API, implement their own Platform API, then link against the 
+final executable with the 'libsilkscreen' binary.
