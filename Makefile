@@ -1,5 +1,5 @@
 CC        = gcc
-LIB       = lib/libsilkscreen
+LIB       = lib/libsilkscreen.a
 INCLUDE   = include
 OBJ       = lib
 SRC       = src
@@ -7,8 +7,8 @@ SRC       = src
 SRCS      += $(shell find $(SRC) -type f -name '*.c')
 OBJS      = $(patsubst $(SRC)/%.c,$(OBJ)/%.o,$(SRCS))
 
-DYNFLAGS  = -rdynamic -shared -ggdb -fPIC 
-WARNFLAGS = -Wall -Wextra -Werror -pedantic -pthread 
+WARNFLAGS = -Wall -Wextra -Werror -pedantic
+PFLAGS    = -pthread
 # LDLIBS    = 
 
 .PHONY: clean format
