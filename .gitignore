@@ -1,3 +1,7 @@
+.cache/
 lib/
 compile_commands.json
+*.a
+*.out
+*.so
 
