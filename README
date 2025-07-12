@@ -1,0 +1,7 @@
+== SILKscreen ==
+
+
+== Building ==
+
+If you are on a POSIX-compliant system and have GCC installed, you can simply run 'make' in the root directory.
+On Windows, this has been successfully achieved using MSYS2 MINGW64.
