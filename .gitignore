@@ -1,8 +1,10 @@
 .cache/
+build/
 lib/
 build/
 compile_commands.json
 *.a
+*.o
 *.out
 *.so
 
